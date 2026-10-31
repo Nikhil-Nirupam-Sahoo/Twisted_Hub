@@ -1,0 +1,70 @@
+rules_version = '2';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Anonymous Campus Issue Tracker — Firestore security rules
+//
+// Public:
+//   • read any issue
+//   • create an issue (status forced to "open", upvotes forced to 0)
+//   • increment an issue's upvotes by exactly 1 (repeat votes are blocked
+//     client-side with localStorage; see README for hardening options)
+//
+// Signed-in users (admin accounts created manually in Firebase Auth):
+//   • change only the status field
+//
+// Nobody can edit descriptions, delete issues, or change upvote counts by an
+// arbitrary amount.
+// ─────────────────────────────────────────────────────────────────────────────
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function validCategory(value) {
+      return value is string && value in [
+        'facilities', 'wifi', 'hostel', 'canteen', 'academics',
+        'maintenance', 'safety', 'transport', 'other'
+      ];
+    }
+
+    function validStatus(value) {
+      return value is string && value in ['open', 'in_progress', 'resolved'];
+    }
+
+    match /issues/{issueId} {
+      allow read: if true;
+
+      allow create: if
+        request.resource.data.keys().hasOnly([
+          'category', 'location', 'description', 'status', 'upvotes', 'createdAt'
+        ])
+        && validCategory(request.resource.data.category)
+        && request.resource.data.location is string
+        && request.resource.data.location.size() >= 3
+        && request.resource.data.location.size() <= 120
+        && request.resource.data.description is string
+        && request.resource.data.description.size() >= 10
+        && request.resource.data.description.size() <= 1000
+        && request.resource.data.status == 'open'
+        && request.resource.data.upvotes == 0
+        && request.resource.data.createdAt == request.time;
+
+      // Admin: status changes only.
+      allow update: if
+        signedIn()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+        && validStatus(request.resource.data.status);
+
+      // Public: one upvote at a time (localStorage prevents repeats per browser).
+      allow update: if
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['upvotes'])
+        && request.resource.data.upvotes is int
+        && request.resource.data.upvotes == resource.data.upvotes + 1;
+
+      allow delete: if false;
+    }
+  }
+}

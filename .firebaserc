@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "twisted-hub",
+    "twisted-hub": "twisted-hub"
+  },
+  "targets": {},
+  "etags": {}
+}

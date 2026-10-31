@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+# Admin tools are not useful to crawlers.
+Disallow: /admin
+Disallow: /login

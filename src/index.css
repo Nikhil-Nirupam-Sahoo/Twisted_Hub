@@ -1,0 +1,205 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --animate-fade-in-up: fade-in-up 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-float: float 10s ease-in-out infinite;
+  --animate-float-slow: float 16s ease-in-out infinite;
+  --animate-spin-slow: spin-slow 42s linear infinite;
+  --animate-glow: glow 6s ease-in-out infinite;
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-24px) rotate(7deg);
+    }
+  }
+
+  @keyframes spin-slow {
+    to {
+      transform: translateX(-50%) rotate(360deg);
+    }
+  }
+
+  @keyframes glow {
+    0%,
+    100% {
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 0.9;
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-[#05010f] text-slate-100 antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    @apply bg-fuchsia-500/35 text-white;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #05010f;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: linear-gradient(180deg, #22d3ee, #d946ef);
+  }
+
+  select.field option {
+    background-color: #0b0618;
+    color: #e2e8f0;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #f1f5f9;
+    box-shadow: 0 0 0 1000px #0b0618 inset;
+    transition: background-color 9999s ease-out;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-fuchsia-500 via-violet-500 to-cyan-400 text-white hover:brightness-110 active:brightness-95;
+    box-shadow: 0 0 28px -8px rgba(217, 70, 239, 0.85);
+  }
+
+  .btn-secondary {
+    @apply border border-white/15 bg-white/5 text-slate-200 shadow-sm hover:border-cyan-400/50 hover:bg-cyan-400/10 hover:text-cyan-200;
+  }
+
+  .btn-ghost {
+    @apply text-slate-300 hover:bg-white/10 hover:text-white;
+  }
+
+  .field-label {
+    @apply mb-1.5 block text-sm font-medium text-slate-300;
+  }
+
+  .field {
+    @apply w-full rounded-xl border border-white/10 bg-slate-950/60 px-3.5 py-2.5 text-sm text-slate-100 shadow-inner outline-none transition placeholder:text-slate-400 focus:border-cyan-400/70 focus:ring-4 focus:ring-cyan-400/15;
+  }
+
+  .field-error {
+    @apply border-rose-400/60 focus:border-rose-400 focus:ring-rose-400/15;
+  }
+
+  .card {
+    @apply relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/55 backdrop-blur-xl;
+    box-shadow: 0 0 60px -25px rgba(124, 58, 237, 0.8);
+  }
+
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.65), rgba(217, 70, 239, 0.65), transparent);
+    pointer-events: none;
+  }
+}
+
+/* ── Arcade backdrop ─────────────────────────────────────────────────────── */
+
+.arcade-grid {
+  background-image:
+    linear-gradient(to right, rgba(34, 211, 238, 0.22) 1px, transparent 1px),
+    linear-gradient(to top, rgba(217, 70, 239, 0.22) 1px, transparent 1px);
+  background-size: 64px 64px;
+  transform: perspective(500px) rotateX(62deg) scale(1.35);
+  transform-origin: center bottom;
+  mask-image: linear-gradient(to top, black 0%, rgba(0, 0, 0, 0.35) 55%, transparent 100%);
+  animation: grid-scroll 7s linear infinite;
+}
+
+@keyframes grid-scroll {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 64px;
+  }
+}
+
+.arcade-stars {
+  background-image:
+    radial-gradient(1px 1px at 25px 35px, rgba(255, 255, 255, 0.9) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 120px 85px, rgba(103, 232, 249, 0.85) 50%, transparent 51%),
+    radial-gradient(1px 1px at 210px 150px, rgba(240, 171, 252, 0.85) 50%, transparent 51%);
+  background-size:
+    280px 280px,
+    340px 340px,
+    420px 420px;
+  animation: star-drift 90s linear infinite;
+}
+
+@keyframes star-drift {
+  to {
+    background-position:
+      280px 140px,
+      -340px 170px,
+      420px -210px;
+  }
+}
+
+.arcade-scanlines {
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.045) 0px,
+    rgba(255, 255, 255, 0.045) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  mix-blend-mode: overlay;
+}
+
+.neon-glow {
+  text-shadow:
+    0 0 22px rgba(217, 70, 239, 0.55),
+    0 0 55px rgba(34, 211, 238, 0.3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

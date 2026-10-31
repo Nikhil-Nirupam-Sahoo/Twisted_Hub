@@ -1,0 +1,31 @@
+{
+  "name": "anonymous-campus-issue-tracker",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Anonymous campus issue tracker built with React, Vite, Tailwind CSS and Firebase.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "emulators": "firebase emulators:start",
+    "deploy": "npm run build && firebase deploy"
+  },
+  "dependencies": {
+    "firebase": "^13.1.0",
+    "lucide-react": "^1.65.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-router-dom": "^7.18.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@vitejs/plugin-react": "^6.1.2",
+    "firebase-tools": "^15.34.2",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.3.5"
+  },
+  "overrides": {
+    "@grpc/grpc-js": "^1.14.7"
+  }
+}
