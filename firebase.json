@@ -31,5 +31,15 @@
       "enabled": true
     },
     "singleProjectMode": true
+  },
+  "auth": {
+    "providers": {
+      "anonymous": true,
+      "emailPassword": true,
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "twisted-hub",
+        "supportEmail": "support@twisted-hub.firebaseapp.com"
+      }
+    }
   }
 }
