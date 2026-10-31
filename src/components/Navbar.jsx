@@ -38,11 +38,10 @@ export default function Navbar() {
     <header className="sticky top-0 z-40 border-b border-white/10 bg-[#070213]/80 backdrop-blur-2xl">
       {isDemoMode && (
         <div className="border-b border-amber-400/20 bg-amber-400/10 px-4 py-2 text-center text-xs text-amber-200">
-          <span className="font-semibold">Demo mode</span>
-          <span className="mx-1.5 text-amber-400/60">•</span>
-          issues are stored in this browser. Add your Firebase keys in{' '}
-          <code className="rounded bg-amber-400/15 px-1 py-0.5 font-mono text-[11px]">.env</code> to
-          connect a real project.
+          <span className="font-semibold"></span>
+          <span className="mx-1.5 text-amber-400/60"></span>
+          
+          <code className="rounded bg-amber-400/15 px-1 py-0.5 font-mono text-[11px]"></code> 
         </div>
       )}
 
